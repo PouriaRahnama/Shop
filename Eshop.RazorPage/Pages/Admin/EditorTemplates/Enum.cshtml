@@ -1,0 +1,15 @@
+﻿@model Enum
+@{
+    var type = Model.GetType();
+}
+<div class="form-group">
+    <label asp-for="@Model"></label>
+    <select class="form-control" asp-for="@Model">
+        <option>Select...</option>
+        @foreach (var item in Enum.GetNames(type))
+        {
+            <option value="@item">@item.Replace("_"," ")</option>
+        }
+    </select>
+    <span asp-validation-for="@Model"></span>
+</div>

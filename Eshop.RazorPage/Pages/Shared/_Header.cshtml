@@ -1,0 +1,186 @@
+﻿@using Eshop.RazorPage.Services.Categories
+@using Eshop.RazorPage.Services.Users
+@using Eshop.RazorPage.Models.Users
+@using Eshop.RazorPage.Infrastructure;
+@inject ICategoryService _CategoryService
+@{
+    var categories = await _CategoryService.GetCategories();
+}
+@inject IUserService _UserService
+@{
+    UserDto user = null;
+    if(User.Identity.IsAuthenticated)
+    {
+        user = await _UserService.GetCurrentUser();
+    }
+}
+<header class="page-header">
+    <div class="top-page-header">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="contact-list">
+                    <ul>
+                        <li><i class="fas fa-phone-rotary"></i><a href="tel: 00000000000">000-00000000</a></li>
+                        <li>
+                            <i class="fas fa-envelope"></i><a href="mailto: site@example.com">test@example.com</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="top-header-menu">
+                    <ul>
+                        @if (User.IsInRole("Seller"))
+                        {
+                            <li>                     
+                            <a href="/Admin">
+                                    پنل ادمین
+                            </a>
+                            </li>
+                            <li>
+                                <a href="/SellerPanel">
+                                    پنل فروشنده
+                                </a>
+                            </li>
+                        }
+                        <li><a href="/">خانه</a></li>
+                        <li><a href="/search">فروشگاه</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="bottom-page-header">
+            <div class="d-flex align-items-center">
+                <div class="site-logo">
+                    <a href="/">
+                        <img src="/assets/images/1.jpg" alt="logo" width="30">
+                    </a>
+                </div>
+                <div class="search-box">
+                    <form action="/search">
+                        <input type="text" name="q" placeholder="نام محصول یا برند را جستجو کنید...">
+                        <i class="far fa-search"></i>
+                    </form>
+                </div>
+            </div>
+            <div class="user-items">
+                <div class="user-item cart-list">
+                    <a href="#">
+                        <i class="fal fa-shopping-basket"></i>
+                        <span class="bag-items-number">0</span>
+                    </a>
+                    <ul>
+                        <li class="cart-items">
+                            <ul class="do-nice-scroll">
+                            </ul>
+                        </li>
+                        <li class="cart-footer">
+                            <span class="d-block text-center mb-3">
+                                مبلغ کل:
+                                <span class="total">0 تومان</span>
+                            </span>
+                            <span class="d-block text-center px-2">
+                                <a href="/shopCart" class="btn-cart">
+                                    مشاهده سبد خرید
+                                    <i class="mi mi-ShoppingCart"></i>
+                                </a>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="user-item account">
+
+                    <a href="#">
+                        @user?.Name  @user?.Family
+                        <i class="fad fa-chevron-down text-sm mr-1"></i>
+                    </a>
+                    <ul class="dropdown--wrapper">
+                        <li class="header-profile-dropdown-account-container">
+                            <a href="#" class="d-block">
+                                <span class="header-profile-dropdown-user">
+                                    <span class="header-profile-dropdown-user-img">
+                                        <img src="./assets/images/avatar/avatar.png">
+                                    </span>
+                                    <span class="header-profile-dropdown-user-info">
+                                        <p class="header-profile-dropdown-user-name">
+                                            @User.Identity.Name
+                                        </p>
+                                        <span class="header-profile-dropdown-user-profile-link">
+                                            <a href="/profile" class="text-danger"> مشاهده حساب
+                                               کاربری</a>
+                                        </span>
+                                    </span>
+                                </span>
+                                <span class="header-profile-dropdown-account">
+                                    <span class="header-profile-dropdown-account-item">
+                                        <span class="header-profile-dropdown-account-item-title"></span>
+                                        <span class="header-profile-dropdown-account-item-amount">
+                                            <span class="header-profile-dropdown-account-item-amount-number"></span>
+                                            @user?.Name  @user?.Family
+                                        </span>
+                                    </span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Auth/login" class="dropdown--btn-primary">وارد شوید</a>
+                        </li>
+                        <li>
+                            <span>کاربر جدید هستید؟</span>
+                            <a href="/Auth/register" class="border-bottom-dt">ثبت نام</a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a href="/profile">
+                                پروفایل
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/profile/orders">
+                                پیگیری سفارش
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <nav class="nav-wrapper">
+            <ul>
+                <li class="category-list">
+                    <a href="#"><i class="fal fa-bars"></i>دسته بندی کالاها</a>
+                    <ul>
+                        @foreach (var item in categories)
+                        {
+                            <li>
+                                <a href="#">@item.Title</a>
+                                <ul class="row">
+                                    <li class="col-12"><a href="/search?category=@item.Slug">همه دسته‌بندی‌های @item.Title</a></li>
+                                    @foreach (var child in item.Childs)
+                                    {
+                                        <li class="col-3">
+                                            <a href="/search?category=@child.Slug">@child.Title</a>
+                                            @if (child.Childs.Any())
+                                            {
+                                                @foreach (var subChild in child.Childs)
+                                                {
+                                                    <ul>
+                                                        <li>
+                                                            <a href="/search?category=@subChild.Slug">@subChild.Title</a>
+                                                        </li>
+
+                                                    </ul>
+                                                }
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+
+
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>

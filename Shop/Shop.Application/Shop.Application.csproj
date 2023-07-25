@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Sellers\ChangeStatus\**" />
+    <Compile Remove="Sellers\DeleteInventory\**" />
+    <EmbeddedResource Remove="Sellers\ChangeStatus\**" />
+    <EmbeddedResource Remove="Sellers\DeleteInventory\**" />
+    <None Remove="Sellers\ChangeStatus\**" />
+    <None Remove="Sellers\DeleteInventory\**" />
+  </ItemGroup>
+
+  <ItemGroup>	  
+    <Folder Include="Categories\Remove\" />
+    <Folder Include="Comments\Delete\" />
+    <Folder Include="Orders\Finally\" />
+    <Folder Include="Orders\SendOrder\" />
+    <Folder Include="Roles\Create\" />
+    <Folder Include="Roles\Edit\" />
+    <Folder Include="Sellers\Create\" />
+    <Folder Include="Sellers\Edit\" />
+    <Folder Include="Sellers\AddInventory\" />
+    <Folder Include="SiteEntities\ShippingMethods\Create\" />
+    <Folder Include="SiteEntities\ShippingMethods\Edit\" />
+    <Folder Include="SiteEntities\ShippingMethods\Delete\" />
+    <Folder Include="SiteEntities\Sliders\Edit\" />
+    <Folder Include="Users\Create\" />
+    <Folder Include="Users\Edit\" />
+    <Folder Include="Users\AddAddress\" />
+    <Folder Include="Users\DeleteAddress\" />
+    <Folder Include="Users\EditAddress\" />
+    <Folder Include="Users\AddToken\" />
+    <Folder Include="Users\ChangePassword\" />
+    <Folder Include="Users\SetActiveAddress\" />
+    <Folder Include="Users\RemoveToken\" />
+    <Folder Include="Users\Register\" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Dapper" Version="2.0.123" />
+	<PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.4" />
+    <ProjectReference Include="..\..\Common\Common.Application\Common.Application.csproj" />
+    <ProjectReference Include="..\Shop.Domain\Shop.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

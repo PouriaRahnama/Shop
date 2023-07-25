@@ -1,0 +1,60 @@
+﻿@page
+@model Eshop.RazorPage.Pages.Admin.users.IndexModel
+@{
+    ViewData["title"] = "کاربران ";
+    ViewData["selected"] = "users";
+}
+<form class="card shadow-lg " method="get">
+    <div class="card-header text-left">
+        <a asp-page="Index" class="btn btn-danger btn-sm">حذف فیلتر</a>
+        <button type="submit" class="btn btn-primary btn-sm">فیلتر</button>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <label>ایمیل کاربر</label>
+                <input type="email" asp-for="FilterParams.Email" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label>شماره کاربر</label>
+                <input type="text" asp-for="FilterParams.PhoneNumber" class="form-control" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="card">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-bordered table-hover text-center m-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th> نام </th>
+                    <th> ایمیل</th>
+                    <th>جنسیت</th>
+                    <th>شماره تماس</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.FilterResult.Data)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name @item.Family</td>
+                        <td>@item.Email</td>
+                        <td>@item.Gender.ToString()</td>
+                        <td>@item.PhoneNumber.ToString()</td>
+                        <td>
+                            <a class="btn btn-primary" asp-page="Show" asp-route-id="@item.Id">نمایش</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<partial name="Admin/Shared/_Pagination" model="Model.FilterResult" />
+
+
+
