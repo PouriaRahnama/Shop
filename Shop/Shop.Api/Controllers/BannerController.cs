@@ -15,8 +15,6 @@ namespace Shop.Api.Controllers;
 public class BannerController : ApiController
 {
     private readonly IBannerFacade _facade;
-
-
     public BannerController(IBannerFacade facade)
     {
         _facade = facade;
