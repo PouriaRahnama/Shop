@@ -28,6 +28,14 @@ builder.Services.AddAuthorization(option =>
             .Any(c => c.Type == ClaimTypes.Role && c.Value.Contains("Seller")));
         var pr = ClaimTypes.Role;
     });
+
+    option.AddPolicy("AdminPanel", builder =>
+    {
+        builder.RequireAuthenticatedUser();
+        builder.RequireAssertion(f => f.User.Claims
+            .Any(c => c.Type == ClaimTypes.Role && c.Value.Contains("Admin")));
+        var pr = ClaimTypes.Role;
+    });
 });
 
 builder.Services.AddRazorPages()
@@ -36,6 +44,7 @@ builder.Services.AddRazorPages()
     {
         options.Conventions.AuthorizeFolder("/Profile", "Account");
         options.Conventions.AuthorizeFolder("/SellerPanel", "SellerPanel");
+        options.Conventions.AuthorizeFolder("/Admin", "AdminPanel");
     });
 
 builder.Services.AddAuthentication(option =>
@@ -84,6 +93,13 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
 app.Use(async (context, next) =>
 {
     await next();
