@@ -43,6 +43,8 @@ namespace Shop.Domain.ProductAgg
             SecondarySubCategoryId = secondarySubCategoryId;
             Slug = slug.ToSlug();
             SeoData = seoData;
+            Images = new List<ProductImage>();
+            Specifications = new List<ProductSpecification>();
         }
 
         public void Edit(string title, string description, long categoryId,
