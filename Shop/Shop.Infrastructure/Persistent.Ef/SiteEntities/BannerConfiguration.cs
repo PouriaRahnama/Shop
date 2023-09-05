@@ -7,6 +7,7 @@ internal class BannerConfiguration : IEntityTypeConfiguration<Banner>
 {
     public void Configure(EntityTypeBuilder<Banner> builder)
     {
+        builder.HasKey(x => x.Id);
         builder.Property(b => b.ImageName)
             .HasMaxLength(120).IsRequired();
 

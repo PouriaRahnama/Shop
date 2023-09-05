@@ -9,6 +9,7 @@ namespace Shop.Infrastructure.Persistent.Ef.SellerAgg
         public void Configure(EntityTypeBuilder<Seller> builder)
         {
             builder.ToTable("Sellers", "seller");
+            builder.HasKey(b => b.Id);
             builder.HasIndex(b => b.NationalCode).IsUnique();
 
             builder.Property(b => b.NationalCode)
