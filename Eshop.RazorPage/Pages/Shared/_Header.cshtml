@@ -28,19 +28,36 @@
                 </div>
                 <div class="top-header-menu">
                     <ul>
-                        @if (User.IsInRole("Seller"))
+                        @if (User.IsInRole("Admin-Seller"))
                         {
                             <li>                     
                             <a href="/Admin">
                                     پنل ادمین
                             </a>
-                            </li>
+                            </li>                                           
                             <li>
                                 <a href="/SellerPanel">
                                     پنل فروشنده
                                 </a>
                             </li>
                         }
+                        else if (User.IsInRole("Admin"))
+                        {
+                            <li>
+                                <a href="/Admin">
+                                    پنل ادمین
+                                </a>
+                            </li>
+                        }
+                        else if (User.IsInRole("Seller"))
+                        {
+                            <li>
+                                <a href="/SellerPanel">
+                                    پنل فروشنده
+                                </a>
+                            </li>
+                        }
+
                         <li><a href="/">خانه</a></li>
                         <li><a href="/search">فروشگاه</a></li>
                     </ul>
