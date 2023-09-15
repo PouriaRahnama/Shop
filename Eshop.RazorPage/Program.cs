@@ -3,13 +3,8 @@ using System.Text;
 using Eshop.RazorPage.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-
 
 builder.Services.RegisterApiServices();
 builder.Services.AddHttpContextAccessor();
@@ -70,13 +65,8 @@ builder.Services.AddAuthentication(option =>
 var app = builder.Build();
 
 
-
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
-}
+
 
 app.Use(async (context, next) =>
 {
@@ -94,12 +84,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
-}
 app.Use(async (context, next) =>
 {
     await next();
@@ -110,10 +94,13 @@ app.Use(async (context, next) =>
         context.Response.Redirect($"/auth/login?redirectTo={path}");
     }
 });
+
+if (app.Environment.IsEnvironment("Production"))
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
 app.UseAuthentication();
-
 app.UseAuthorization();
-
-
 app.MapRazorPages();
 app.Run();
