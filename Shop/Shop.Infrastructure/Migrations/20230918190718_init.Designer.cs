@@ -12,7 +12,7 @@ using Shop.Infrastructure.Persistent.Ef;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20230905175742_init")]
+    [Migration("20230918190718_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

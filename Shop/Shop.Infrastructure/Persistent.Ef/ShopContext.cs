@@ -25,7 +25,6 @@ public class ShopContext : DbContext
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Product> Products { get; set; }
-    public DbSet<SellerInventory> Inventories { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<Seller> Sellers { get; set; }
     public DbSet<Slider> Sliders { get; set; }
@@ -44,7 +43,6 @@ public class ShopContext : DbContext
             .Where(x => x.State != EntityState.Detached)
             .Select(c => c.Entity)
             .Where(c => c.DomainEvents.Any()).ToList();
-
     private async Task PublishEvents(List<AggregateRoot> modifiedEntities)
     {
         foreach (var entity in modifiedEntities)
@@ -52,17 +50,15 @@ public class ShopContext : DbContext
             var events = entity.DomainEvents;
             foreach (var domainEvent in events)
             {
-                await _publisher.Publish(domainEvent,PublishStrategy.ParallelNoWait);
+                await _publisher.Publish(domainEvent, PublishStrategy.ParallelNoWait);
             }
         }
     }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         base.OnConfiguring(optionsBuilder);
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShopContext).Assembly);
