@@ -20,10 +20,11 @@ internal static class CategoryMapper
             Childs = category.Childs.MapChildren()
         };
     }
-    public static List<CategoryDto> Map(this List<Category> categories)
+    public static List<CategoryDto>? Map(this List<Category>? categories)
     {
         var model = new List<CategoryDto>();
-
+        if (categories == null)
+            return null;
         categories.ForEach(category =>
         {
             model.Add(new CategoryDto()
@@ -33,17 +34,18 @@ internal static class CategoryMapper
                 Id = category.Id,
                 SeoData = category.SeoData,
                 CreationDate = category.CreationDate,
-                Childs = category.Childs.MapChildren()
+                Childs = category.Childs.MapChildren() 
             });
         });
 
         return model;
     }
 
-    public static List<ChildCategoryDto> MapChildren(this List<Category> children)
+    public static List<ChildCategoryDto>? MapChildren(this List<Category>? children)
     {
         var model = new List<ChildCategoryDto>();
-
+        if (children == null)
+            return null;
         children.ForEach(c =>
         {
             model.Add(new ChildCategoryDto()
@@ -60,9 +62,11 @@ internal static class CategoryMapper
         return model;
     }
 
-    private static List<SecondaryChildCategoryDto> MapSecondaryChild(this List<Category> children)
+    private static List<SecondaryChildCategoryDto>? MapSecondaryChild(this List<Category>? children)
     {
         var model = new List<SecondaryChildCategoryDto>();
+        if (children == null)
+            return null;
         children.ForEach(c =>
         {
             model.Add(new SecondaryChildCategoryDto()
