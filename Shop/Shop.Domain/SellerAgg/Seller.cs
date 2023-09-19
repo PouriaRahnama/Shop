@@ -20,6 +20,7 @@ namespace Shop.Domain.SellerAgg
 
         private Seller()
         {
+            Inventories = new List<SellerInventory>();
         }
 
         public Seller(long userId, string shopName, string nationalCode, ISellerDomainService domainService)

@@ -3,11 +3,6 @@ using Common.Domain.Exceptions;
 using Common.Domain.Utils;
 using Common.Domain.ValueObjects;
 using Shop.Domain.CategoryAgg.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shop.Domain.CategoryAgg
 {
@@ -15,6 +10,7 @@ namespace Shop.Domain.CategoryAgg
     {
         private Category()
         {
+            Childs = new List<Category>();
         }
         public Category(string title, string slug, SeoData seoData, ICategoryDomainService service)
         {

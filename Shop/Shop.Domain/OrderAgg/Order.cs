@@ -1,11 +1,6 @@
 ﻿using Common.Domain;
 using Common.Domain.Exceptions;
 using Shop.Domain.OrderAgg.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Shop.Domain.OrderAgg.Events;
 
 namespace Shop.Domain.OrderAgg
@@ -14,6 +9,7 @@ namespace Shop.Domain.OrderAgg
     {
         private Order()
         {
+            Items = new List<OrderItem>();
         }
 
         public Order(long userId)

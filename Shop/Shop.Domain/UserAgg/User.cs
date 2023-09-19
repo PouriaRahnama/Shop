@@ -14,7 +14,10 @@ namespace Shop.Domain.UserAgg
     {
         private User()
         {
-
+            Roles = new();
+            Wallets = new();
+            Addresses = new();
+            Tokens = new();
         }
         public User(string name, string family, string phoneNumber, string email,
             string password, Gender gender, IUserDomainService userDomainService)

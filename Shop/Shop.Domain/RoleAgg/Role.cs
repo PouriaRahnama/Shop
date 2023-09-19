@@ -16,6 +16,7 @@ namespace Shop.Domain.RoleAgg
 
         private Role()
         {
+            Permissions = new List<RolePermission>();
         }
 
         public Role(string title, List<RolePermission> permissions)

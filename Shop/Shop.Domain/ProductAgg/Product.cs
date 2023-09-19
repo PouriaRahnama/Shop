@@ -15,6 +15,8 @@ namespace Shop.Domain.ProductAgg
     {
         private Product()
         {
+            Images = new List<ProductImage>();
+            Specifications = new List<ProductSpecification>();
         }
 
         public string Title { get; private set; }
