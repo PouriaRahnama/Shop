@@ -36,6 +36,12 @@ public class ShopCartCookieManager
             return ApiResult.Error();
 
         var product = await _productService.GetProductById(inventory.ProductId);
+        int currentPrice = inventory.Price;
+        if (inventory.DiscountPercentage != 0)
+        {
+            int Discount = inventory.Price * inventory.DiscountPercentage / 100;
+            currentPrice = inventory.Price - Discount;
+        }
         if (shopCart == null)
         {
             var order = new OrderDto()
@@ -51,7 +57,7 @@ public class ShopCartCookieManager
                 {
                     new OrderItemDto()
                     {
-                        Price = inventory.Price,
+                        Price = currentPrice,
                         Count = count,
                         ProductImageName = inventory.ProductImage,
                         ShopName = inventory.ShopName,
@@ -83,7 +89,7 @@ public class ShopCartCookieManager
             {
                 var newItem = new OrderItemDto()
                 {
-                    Price = inventory.Price,
+                    Price = currentPrice,
                     Count = count,
                     ProductImageName = inventory.ProductImage,
                     ShopName = inventory.ShopName,
