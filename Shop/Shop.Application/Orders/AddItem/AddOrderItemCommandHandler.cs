@@ -26,17 +26,24 @@ public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemComman
             return OperationResult.Error("تعداد محصولات موجود کمتر از حد درخواستی است.");
 
         var order = await _repository.GetCurrentUserOrder(request.UserId);
+        int currentPrice = inventory.Price;
+        if (inventory.DiscountPercentage != 0)
+        {
+            int Discount = inventory.Price * inventory.DiscountPercentage / 100;
+            currentPrice = inventory.Price - Discount;
+        }
+
         if (order == null)
         {
             order = new Order(request.UserId);
-            order.AddItem(new OrderItem(request.InventoryId, request.Count, inventory.Price));
+
+            order.AddItem(new OrderItem(request.InventoryId, request.Count, currentPrice));
             _repository.Add(order);
         }
         else
         {
-            order.AddItem(new OrderItem(request.InventoryId, request.Count, inventory.Price));
+            order.AddItem(new OrderItem(request.InventoryId, request.Count, currentPrice));
         }
-
 
         if (ItemCountBeggerThanInventoryCount(inventory, order))
             return OperationResult.Error("تعداد محصولات موجود کمتر از حد درخواستی است.");

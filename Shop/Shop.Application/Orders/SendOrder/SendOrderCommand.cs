@@ -45,7 +45,7 @@ public class SendOrderCommandHandler : IBaseCommandHandler<SendOrderCommand>
             if (count < 0)
                 count = 0;
 
-            seller.EditInventory(Inventory.Id, count, Inventory.Price, 0);
+            seller.EditInventory(Inventory.Id, count, Inventory.Price, Inventory.DiscountPercentage);
             await _sellerRepository.Save();
         }
 
