@@ -10,7 +10,7 @@ public static class ProductMapper
     public static ProductDto? Map(this Product? product)
     {
         if (product == null)
-            return null;
+            return new ProductDto();
         return new()
         {
             Id = product.Id,
@@ -44,7 +44,7 @@ public static class ProductMapper
             SecondarySubCategory = product.SecondarySubCategoryId != null ? new()
             {
                 Id = (long)product.SecondarySubCategoryId
-            } : null,
+            } : new ProductCategoryDto(),
         };
     }
     public static ProductFilterData MapListData(this Product product)

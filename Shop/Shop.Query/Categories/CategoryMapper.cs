@@ -8,7 +8,7 @@ internal static class CategoryMapper
     public static CategoryDto Map(this Category? category)
     {
         if (category == null)
-            return null;
+            return new CategoryDto();
 
         return new CategoryDto()
         {
@@ -24,7 +24,8 @@ internal static class CategoryMapper
     {
         var model = new List<CategoryDto>();
         if (categories == null)
-            return null;
+            return new List<CategoryDto>();
+
         categories.ForEach(category =>
         {
             model.Add(new CategoryDto()
@@ -45,7 +46,8 @@ internal static class CategoryMapper
     {
         var model = new List<ChildCategoryDto>();
         if (children == null)
-            return null;
+            return new List<ChildCategoryDto>();
+
         children.ForEach(c =>
         {
             model.Add(new ChildCategoryDto()
@@ -66,7 +68,7 @@ internal static class CategoryMapper
     {
         var model = new List<SecondaryChildCategoryDto>();
         if (children == null)
-            return null;
+            return new List<SecondaryChildCategoryDto>();
         children.ForEach(c =>
         {
             model.Add(new SecondaryChildCategoryDto()

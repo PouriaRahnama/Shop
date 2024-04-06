@@ -19,7 +19,7 @@ public class GetSliderByIdQueryHandler : IQueryHandler<GetSliderByIdQuery, Slide
         var slider = await _context.Sliders
             .FirstOrDefaultAsync(f => f.Id == request.SliderId, cancellationToken);
         if (slider == null)
-            return null;
+            return new SliderDto();
 
         return new SliderDto()
         {

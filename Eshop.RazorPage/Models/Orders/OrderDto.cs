@@ -15,14 +15,20 @@ public class OrderDto : BaseDto
     {
         get
         {
-            var totalPrice = Items.Sum(s => s.TotalPrice);
-            if (ShippingMethod != null)
-                totalPrice += ShippingMethod.ShippingCost;
-
-            if (Discount != null)
+            var totalPrice = 0;
+            if (Items != null)
             {
-                totalPrice -= Discount.DiscountAmount;
+                totalPrice = Items.Sum(s => s.TotalPrice);
+                if (ShippingMethod != null)
+                    totalPrice += ShippingMethod.ShippingCost;
+
+                if (Discount != null)
+                {
+                    totalPrice -= Discount.DiscountAmount;
+                }
+                return totalPrice;
             }
+
             return totalPrice;
         }
     }

@@ -24,7 +24,7 @@ public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, Pro
 
         var model = product.Map();
         if (model == null)
-            return null;
+            return new ProductDto();
         await model.SetCategories(_context);
         return model;
     }

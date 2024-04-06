@@ -24,7 +24,7 @@ public class GetCurrentUserOrderQueryHandler : IQueryHandler<GetCurrentUserOrder
         var order = await _shopContext.Orders
             .FirstOrDefaultAsync(f => f.UserId == request.UserId && f.Status==Shop.Domain.OrderAgg.OrderStatus.Pending, cancellationToken);
         if (order == null)
-            return null;
+            return new OrderDto();
 
         var orderDto = order.Map();
         orderDto.UserFullName = await _shopContext.Users.Where(f => f.Id == orderDto.UserId)

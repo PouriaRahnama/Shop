@@ -15,12 +15,10 @@ namespace Eshop.RazorPage.Pages
     {
         private readonly IOrderService _orderService;
         private readonly ShopCartCookieManager _shopCartCookieManager;
-        private readonly ISellerService _sellerService;
-        public ShopCartModel(IOrderService orderService, ShopCartCookieManager shopCartCookieManager, ISellerService sellerService)
+        public ShopCartModel(IOrderService orderService, ShopCartCookieManager shopCartCookieManager)
         {
             _orderService = orderService;
             _shopCartCookieManager = shopCartCookieManager;
-            _sellerService = sellerService;
         }
 
         public OrderDto? OrderDto { get; set; }
@@ -61,27 +59,12 @@ namespace Eshop.RazorPage.Pages
         {
             if (User.Identity.IsAuthenticated)
             {
-
-                var order = await _orderService.GetCurrentOrder();
-                foreach (var item in order.Items)
-                {
-                    var Inventory = _sellerService.GetInventoryById(item.InventoryId).Result;
-                    if (Inventory.Count == order.Items.Sum(c => c.Count))
-                    {
-                        return await AjaxTryCatch(async () =>
-                        {
-                            return ApiResult.Error("error");
-                        });
-                    }
-                }
-
                 return await AjaxTryCatch(() => _orderService.IncreaseOrderItem(new IncreaseOrderItemCountCommand()
                 {
                     Count = 1,
                     UserId = User.GetUserId(),
                     ItemId = id
                 }));
-
             }
 
             else

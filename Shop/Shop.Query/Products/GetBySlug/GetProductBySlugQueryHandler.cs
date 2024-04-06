@@ -21,7 +21,7 @@ public class GetProductBySlugQueryHandler : IQueryHandler<GetProductBySlugQuery,
         var model = product.Map();
 
         if (model == null)
-            return null;
+            return new ProductDto();
 
         await model.SetCategories(_context);
         return model;

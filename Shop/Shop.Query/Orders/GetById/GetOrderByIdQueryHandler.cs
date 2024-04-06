@@ -21,7 +21,7 @@ internal class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery, Order
         var order = await _shopContext.Orders
             .FirstOrDefaultAsync(f => f.Id == request.OrderId, cancellationToken);
         if (order == null)
-            return null;
+            return new OrderDto();
 
         var orderDto = order.Map();
         orderDto.UserFullName = await _shopContext.Users.Where(f => f.Id == orderDto.UserId)

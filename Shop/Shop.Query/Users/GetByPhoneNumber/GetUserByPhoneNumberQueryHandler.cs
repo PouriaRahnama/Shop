@@ -20,7 +20,7 @@ public class GetUserByPhoneNumberQueryHandler : IQueryHandler<GetUserByPhoneNumb
             .FirstOrDefaultAsync(f => f.PhoneNumber == request.PhoneNumber, cancellationToken);
 
         if (user == null)
-            return null;
+            return new UserDto();
 
 
         return await user.Map().SetUserRoleTitles(_context);

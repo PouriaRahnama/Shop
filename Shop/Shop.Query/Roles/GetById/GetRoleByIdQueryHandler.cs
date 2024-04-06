@@ -18,7 +18,7 @@ public class GetRoleByIdQueryHandler : IQueryHandler<GetRoleByIdQuery, RoleDto?>
     {
         var role = await _context.Roles.FirstOrDefaultAsync(f => f.Id == request.RoleId, cancellationToken: cancellationToken);
         if (role == null)
-            return null;
+            return new RoleDto();
 
         return new RoleDto()
         {

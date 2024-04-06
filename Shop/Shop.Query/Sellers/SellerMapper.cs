@@ -8,7 +8,7 @@ public static class SellerMapper
     public static SellerDto Map(this Seller seller)
     {
         if (seller == null)
-            return null;
+            return new SellerDto();
 
         return new SellerDto()
         {

@@ -78,7 +78,7 @@ internal class ProductFacade : IProductFacade
     {
         var product = await _mediator.Send(new GetProductBySlugQuery(slug));
         if (product == null)
-            return null;
+            return new SingleProductDto();
 
         var inventories = await _inventoryFacade.GetByProductId(product.Id);
         var model = new SingleProductDto()

@@ -21,12 +21,17 @@ public class OrderDto : BaseDto
     {
         get
         {
-            var total = Items.Sum(s => s.TotalPrice);
-            if (Discount != null)
+            var total = 0;
+            if (Items != null)
             {
-                total -= Discount.DiscountAmount;
+                 total = Items.Sum(s => s.TotalPrice);
+                if (Discount != null)
+                {
+                    total -= Discount.DiscountAmount;
+                }
+                total += ShippingMethod?.ShippingCost ?? 0;
+                return total;
             }
-            total += ShippingMethod?.ShippingCost ?? 0;
             return total;
         }
     }

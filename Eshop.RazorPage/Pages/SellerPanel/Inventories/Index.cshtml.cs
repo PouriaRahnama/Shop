@@ -22,10 +22,12 @@ public class IndexModel : BaseRazorPage
     public async Task<IActionResult> OnGet()
     {
         var seller = await _sellerService.GetCurrentSeller();
-        if (seller == null)
+        if (seller.UserId == 0 && seller.NationalCode == null)
+        {
             return Redirect("/");
-
+        }
         Inventories = await _sellerService.GetSellerInventories();
+
         return Page();
     }
 
@@ -34,7 +36,7 @@ public class IndexModel : BaseRazorPage
         return await AjaxTryCatch(async () =>
         {
             var inventory = await _sellerService.GetInventoryById(id);
-            if(inventory==null)
+            if (inventory == null)
                 return ApiResult<string>.Success("اطلاعات نامعتبر است");
             var view = await _renderViewToString.RenderToStringAsync("_Edit", new EditSellerInventoryCommand
             {

@@ -18,7 +18,7 @@ public class GetBannerByIdQueryHandler : IQueryHandler<GetBannerByIdQuery, Banne
     {
         var banner = await _context.Banners.FirstOrDefaultAsync(f => f.Id == request.BannerId, cancellationToken);
         if (banner == null)
-            return null;
+            return new BannerDto();
 
         return new BannerDto()
         {
