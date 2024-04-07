@@ -12,7 +12,7 @@
     var middlePage = banners.Where(f => f.Position == BannerPosition.وسط_صفحه).ToList();
 
 }
-@if (topSlider != null)
+@if (topSlider.Id != 0)
 {
     <div class="row d-none d-sm-block">
         <div class="col-12 mb-3">

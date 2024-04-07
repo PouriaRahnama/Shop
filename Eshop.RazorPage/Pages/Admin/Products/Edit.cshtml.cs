@@ -60,7 +60,7 @@ public class EditModel : BaseRazorPage
     public async Task<IActionResult> OnGet(long productId)
     {
         var product = await _productService.GetProductById(productId);
-        if (product == null)
+        if (product.Id == 0 || product.Title == null)
             return RedirectToPage("Index");
 
         Title = product.Title;

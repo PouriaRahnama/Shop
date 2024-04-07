@@ -19,7 +19,7 @@ public class ShowModel : BaseRazorPage
     public async Task<IActionResult> OnGet(long id)
     {
         var order = await _orderService.GetOrderById(id);
-        if (order == null)
+        if (order.Id == 0 || order.UserId == 0)
             return RedirectToPage("Index");
 
 

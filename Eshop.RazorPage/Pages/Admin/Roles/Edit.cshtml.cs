@@ -24,7 +24,7 @@ public class EditModel : BaseRazorPage
     public async Task<IActionResult> OnGet(long id)
     {
         var role = await _roleService.GetRoleById(id);
-        if (role == null)
+        if (role.Id == 0 || role.Title == null)
             return RedirectToPage("Index");
 
         Title = role.Title;

@@ -36,7 +36,7 @@ public class IndexModel : BaseRazorPage
         return await AjaxTryCatch(async () =>
         {
             var banner = await _bannerService.GetBannerById(id);
-            if (banner == null)
+            if (banner.Id == 0)
                 return ApiResult<string>.Error();
 
             var model = new EditBannerCommand()

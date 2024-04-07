@@ -28,7 +28,7 @@ public class ProductModel : BaseRazorPage
     public async Task<IActionResult> OnGet(string slug)
     {
         var product = await _service.GetSingleProduct(slug);
-        if (product == null)
+        if (product.ProductDto.Id == 0)
             return NotFound();
 
         ProductPageModel = product;

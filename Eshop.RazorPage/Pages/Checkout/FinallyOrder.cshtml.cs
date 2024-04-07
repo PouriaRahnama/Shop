@@ -19,7 +19,7 @@ namespace Eshop.RazorPage.Pages.Checkout
         public async Task<IActionResult> OnGet(long orderId)
         {
             var order = await _orderService.GetOrderById(orderId);
-            if (order == null || order.UserId != User.GetUserId())
+            if (order.Id == 0 || order.UserId == 0 || order.UserId != User.GetUserId())
                 return Redirect("/");
 
             OrderDto = order;

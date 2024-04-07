@@ -55,16 +55,14 @@
                 <div class="widget widget-links">
                     <h2 class="widget-title">دسته بندی کالاها</h2>
                     <ul class="widget-list">
-                        @if (categories != null)
+                        @foreach (var item in categories)
                         {
-                            @foreach (var item in categories)
-                            {
-                                <li class="widget-list-item">
-                                    <a href="/search?category=@item?.Slug" class="widget-list-link">@item?.Title</a>
-                                </li>
+                            <li class="widget-list-item">
+                                <a href="/search?category=@item?.Slug" class="widget-list-link">@item?.Title</a>
+                            </li>
 
-                            }
                         }
+
                     </ul>
                 </div>
             </div>

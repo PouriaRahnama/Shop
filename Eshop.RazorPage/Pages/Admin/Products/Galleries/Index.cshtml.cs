@@ -36,7 +36,7 @@ namespace Eshop.RazorPage.Pages.Admin.Products.Galleries
         public async Task<IActionResult> OnGet(long productId)
         {
             var product = await _productService.GetProductById(productId);
-            if (product == null)
+            if (product.Id == 0 || product.Title == null)
                 return RedirectToPage("Index");
 
             Images = product.Images;

@@ -19,7 +19,7 @@ namespace Eshop.RazorPage.Pages.Profile.Orders
         public async Task<IActionResult> OnGet(long id)
         {
             var order = await _orderService.GetOrderById(id);
-            if (order == null || order.UserId != User.GetUserId())
+            if (order.Id == 0 || order.UserId == 0 || order.UserId != User.GetUserId())
                 return RedirectToPage("Index");
 
             Order = order;

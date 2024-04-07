@@ -36,7 +36,7 @@ public class IndexModel : BaseRazorPage
         return await AjaxTryCatch(async () =>
         {
             var inventory = await _sellerService.GetInventoryById(id);
-            if (inventory == null)
+            if (inventory.SellerId == 0 || inventory.ProductId == 0)
                 return ApiResult<string>.Success("اطلاعات نامعتبر است");
             var view = await _renderViewToString.RenderToStringAsync("_Edit", new EditSellerInventoryCommand
             {

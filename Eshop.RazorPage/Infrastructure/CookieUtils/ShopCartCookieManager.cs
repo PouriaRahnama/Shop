@@ -32,7 +32,7 @@ public class ShopCartCookieManager
     {
         var shopCart = GetShopCart();
         var inventory = await _sellerService.GetInventoryById(inventoryId);
-        if (inventory == null)
+        if (inventory.ProductId == 0 || inventory.SellerId == 0)
             return ApiResult.Error();
 
         var product = await _productService.GetProductById(inventory.ProductId);

@@ -29,7 +29,7 @@ public class EditModel : BaseRazorPage
     public async Task<IActionResult> OnGet(long id)
     {
         var category = await _categoryService.GetCategoryById(id);
-        if (category == null)
+        if (category.Id == 0 || category.Title == null)
             return RedirectToPage("Index");
 
         Title = category.Title;

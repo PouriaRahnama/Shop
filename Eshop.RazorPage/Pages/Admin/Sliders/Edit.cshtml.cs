@@ -37,7 +37,7 @@ public class EditModel : BaseRazorPage
     public async Task<IActionResult> OnGet(long id)
     {
         var slider = await _service.GetSliderById(id);
-        if (slider == null)
+        if (slider.Id == 0 || slider.Title == null)
             return RedirectToPage("Index");
 
 

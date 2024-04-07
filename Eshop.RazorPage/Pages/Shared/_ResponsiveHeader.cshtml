@@ -16,43 +16,40 @@
                 </div>
                 <div class="divider"></div>
                 <ul class="category-list">
-                    @if (categories != null)
+                    @foreach (var item in categories)
                     {
-                        @foreach (var item in categories)
-                        {
-                            <li class="has-children">
-                                <a href="#">@item?.Title</a>
-                                <ul>
-                                    <li>
-                                        <a href="/search?category=@item?.Slug">همه دسته بندی های @item?.Title</a>
-                                    </li>
-                                    @if(item?.Childs != null)
-                                    {
-                                        @foreach (var child in item.Childs)
+                        <li class="has-children">
+                            <a href="#">@item?.Title</a>
+                            <ul>
+                                <li>
+                                    <a href="/search?category=@item?.Slug">همه دسته بندی های @item?.Title</a>
+                                </li>
+
+                                @foreach (var child in item.Childs)
+                                {
+                                    <li class="@(child.Childs.Any() ? "has-children" : null)">
+                                        <a href="/search?category=@child.Slug">@child.Title</a>
+
+                                        @if (child.Childs.Any())
                                         {
-                                            <li class="@(child.Childs.Any() ? "has-children" : null)">
-                                                <a href="/search?category=@child.Slug">@child.Title</a>
-
-                                                @if (child.Childs.Any())
+                                            <ul>
+                                                @foreach (var subChild in child.Childs)
                                                 {
-                                                    <ul>
-                                                        @foreach (var subChild in child.Childs)
-                                                        {
-                                                            <li>
-                                                                <a href="/search?category=@subChild.Slug">@subChild.Title</a>
-                                                            </li>
-                                                        }
-                                                    </ul>
+                                                    <li>
+                                                        <a href="/search?category=@subChild.Slug">@subChild.Title</a>
+                                                    </li>
                                                 }
-
-                                            </li>
+                                            </ul>
                                         }
-                                    }
-                                  
-                                </ul>
-                            </li>
-                        }
+
+                                    </li>
+                                }
+
+
+                            </ul>
+                        </li>
                     }
+
                 </ul>
             </div>
             <div class="overlay-side-navigation"></div>

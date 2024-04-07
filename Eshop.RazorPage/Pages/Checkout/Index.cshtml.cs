@@ -33,7 +33,7 @@ namespace Eshop.RazorPage.Pages.Checkout
         public async Task<IActionResult> OnGet()
         {
             var order = await _orderService.GetCurrentOrder();
-            if (order == null)
+            if (order.Id == 0 || order.UserId == 0)
                 return RedirectToPage("../Index");
 
             Order = order;
@@ -49,7 +49,7 @@ namespace Eshop.RazorPage.Pages.Checkout
         {
             var address = await _userAddressService.GetUserAddresses();
             var currentAddress = address.FirstOrDefault(f => f.ActiveAddress);
-            if (currentAddress == null)
+            if (currentAddress.Id == 0 || currentAddress.UserId == 0)
             {
                 return RedirectToPage("Index");
             }

@@ -38,7 +38,7 @@ namespace Eshop.RazorPage.Pages.SellerPanel.Inventories
         public async Task<IActionResult> OnPost()
         {
             var seller = await _service.GetCurrentSeller();
-            if (seller == null)
+            if (seller.Id == 0 || seller.UserId == 0)
                 return Redirect("/");
 
             var result = await _service.AddInventory(new AddSellerInventoryCommand()
