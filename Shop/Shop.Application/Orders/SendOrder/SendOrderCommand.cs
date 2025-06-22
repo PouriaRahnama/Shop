@@ -29,28 +29,27 @@ public class SendOrderCommandHandler : IBaseCommandHandler<SendOrderCommand>
     public async Task<OperationResult> Handle(SendOrderCommand request, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetTracking(request.OrderId);
-        if(order==null)
+        if (order == null)
             return OperationResult.NotFound();
 
         order.ChangeStatus(OrderStatus.Shipping);
         await _orderRepository.Save();
 
-        foreach (var item in order.Items)
-        {
-            var Inventory = _sellerRepository.GetInventoryById(item.InventoryId).Result;
+        #region 
+        //foreach (var item in order.Items)
+        //{
+        //    var Inventory = await _sellerRepository.GetInventoryById(item.InventoryId);
 
-            var seller = _sellerRepository.GetTracking(Inventory.SellerId).Result;
+        //    var seller = await _sellerRepository.GetTracking(Inventory.SellerId);
 
-            var count = Inventory.Count - item.Count;
-            if (count < 0)
-                count = 0;
+        //    var count = Inventory.Count - item.Count;
+        //    if (count <= 0)
+        //        count = 0;
 
-            seller.EditInventory(Inventory.Id, count, Inventory.Price, Inventory.DiscountPercentage);
-            await _sellerRepository.Save();
-        }
-
-
-
+        //    seller.EditInventory(Inventory.Id, count, Inventory.Price, Inventory.DiscountPercentage);
+        //    await _sellerRepository.Save();
+        //}
+        #endregion
 
         return OperationResult.Success();
     }

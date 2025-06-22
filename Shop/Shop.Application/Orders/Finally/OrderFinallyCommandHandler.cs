@@ -1,8 +1,4 @@
 ﻿using Common.Application;
-using Dapper;
-using MediatR;
-using Microsoft.Data.SqlClient;
-using Shop.Application.Orders._EvenHandlers;
 using Shop.Domain.OrderAgg.Repository;
 using Shop.Domain.SellerAgg.Repository;
 using System.Data;

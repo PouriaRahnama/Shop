@@ -1,5 +1,4 @@
 ﻿using Common.Domain;
-using MediatR;
 
 namespace Shop.Domain.OrderAgg.Events;
 
