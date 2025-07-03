@@ -84,6 +84,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
 app.Use(async (context, next) =>
 {
     await next();
@@ -92,6 +93,10 @@ app.Use(async (context, next) =>
     {
         var path = context.Request.Path;
         context.Response.Redirect($"/auth/login?redirectTo={path}");
+    }
+    if (status == 404)
+    {
+        context.Response.Redirect("/Error?code=404");
     }
 });
 

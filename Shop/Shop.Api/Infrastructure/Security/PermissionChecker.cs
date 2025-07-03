@@ -31,12 +31,34 @@ public class PermissionChecker : AuthorizeAttribute, IAsyncAuthorizationFilter
         {
             if (await UserHasPermission(context) == false)
             {
-                context.Result = new ForbidResult();
+                context.Result = new JsonResult(new ApiResult
+                {
+                    IsSuccess = false,
+                    MetaData = new MetaData
+                    {
+                        AppStatusCode = AppStatusCode.UnAuthorize,
+                        Message = "شما اجازه دسترسی به این بخش را ندارید."
+                    }
+                })
+                {
+                    StatusCode = StatusCodes.Status403Forbidden
+                };
             }
         }
         else
         {
-            context.Result = new UnauthorizedObjectResult("Unauthorize");
+            context.Result = new JsonResult(new ApiResult
+            {
+                IsSuccess = false,
+                MetaData = new MetaData
+                {
+                    AppStatusCode = AppStatusCode.UnAuthorize,
+                    Message = "ابتدا باید وارد حساب کاربری خود شوید."
+                }
+            })
+            {
+                StatusCode = StatusCodes.Status401Unauthorized
+            };
         }
     }
 

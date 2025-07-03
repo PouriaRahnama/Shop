@@ -1,12 +1,42 @@
 ﻿@page
 @model ErrorModel
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = "خطا";
 }
 
-<h1 class="text-danger">Error</h1>
+<div class="container text-center mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="border rounded shadow p-5 bg-light">
+                <h1 class="display-4 text-danger mb-3">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    خطای @Model.ErrorCode
+                </h1>
 
+                <p class="lead text-secondary">
+                    @{
+                        if (Model.ErrorCode == 404)
+                        {
+                            <text>صفحه مورد نظر پیدا نشد.</text>
+                        }
+                        else
+                        {
+                            <text>خطایی در سیستم رخ داده است.</text>
+                        }
+                    }
+                </p>
 
+                @if (Model.ShowRequestId)
+                {
+                    <div class="mt-4 text-muted small">
+                        <strong>کد پیگیری:</strong> @Model.RequestId
+                    </div>
+                }
 
-<h3>Production Mode</h3>
-<h3>@Model.RequestId</h3>
+                <div class="mt-4">
+                    <a class="btn btn-primary" href="/">بازگشت به صفحه اصلی</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
