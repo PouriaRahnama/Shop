@@ -7,6 +7,7 @@ using Shop.Application.Orders.Finally;
 using Shop.Application.Orders.IncreaseItemCount;
 using Shop.Application.Orders.RemoveItem;
 using Shop.Application.Orders.SendOrder;
+using Shop.Domain.UserAgg;
 using Shop.Query.Orders.DTOs;
 using Shop.Query.Orders.GetByFilter;
 using Shop.Query.Orders.GetById;
@@ -74,5 +75,10 @@ internal class OrderFacade : IOrderFacade
     public async Task<OrderDto?> GetCurrentOrder(long userId)
     {
         return await _mediator.Send(new GetCurrentUserOrderQuery(userId));
+    }
+
+    public async Task<OperationResult> CancelOrder(long orderId)
+    {
+        return await _mediator.Send(new CancelOrderCommand(orderId));
     }
 }

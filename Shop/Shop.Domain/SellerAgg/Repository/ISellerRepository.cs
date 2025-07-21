@@ -10,6 +10,7 @@ namespace Shop.Domain.SellerAgg.Repository
     public interface ISellerRepository : IBaseRepository<Seller>
     {
         Task<InventoryResult?> GetInventoryById(long id);
+        Task<SellerInventory?> GetSellerInventoryById(long id);
     }
 
     public class InventoryResult

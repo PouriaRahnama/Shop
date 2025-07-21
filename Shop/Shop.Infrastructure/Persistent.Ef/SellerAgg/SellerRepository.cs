@@ -34,4 +34,13 @@ public class SellerRepository : BaseRepository<Seller>, ISellerRepository
         return await connection.QueryFirstOrDefaultAsync<InventoryResult>
             (sql, new { InventoryId = id });
     }
+
+    public async Task<SellerInventory?> GetSellerInventoryById(long id)
+    {
+        using var connection = _dapperContext.CreateConnection();
+        var sql = $"SELECT * from {_dapperContext.Inventories} where Id=@InventoryId";
+
+        return await connection.QueryFirstOrDefaultAsync<SellerInventory>
+            (sql, new { InventoryId = id });
+    }
 }

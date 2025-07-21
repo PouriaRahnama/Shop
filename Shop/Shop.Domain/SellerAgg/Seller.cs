@@ -1,11 +1,12 @@
 ﻿using Common.Domain;
 using Common.Domain.Exceptions;
+using Shop.Domain.SellerAgg.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Shop.Domain.SellerAgg.Services;
 
 namespace Shop.Domain.SellerAgg
 {
@@ -79,5 +80,39 @@ namespace Shop.Domain.SellerAgg
             if (IranianNationalIdChecker.IsValid(nationalCode) == false)
                 throw new InvalidDomainDataException("کد ملی نامعتبر است");
         }
+
+        // متد رزرو کردن کالا
+        public void Reserve(long inventoryId ,int count)
+        {
+            var currentInventory = Inventories.FirstOrDefault(f => f.Id == inventoryId);
+            if (currentInventory == null)
+                throw new NullOrEmptyDomainDataException("محصول یافت نشد");
+
+            //TODO Check Inventories
+            currentInventory.Reserve(count);
+        }
+
+        // آزاد کردن رزرو (وقتی پرداخت انجام نشه یا لغو بشه)
+        public void ReleaseReserved(long inventoryId,int count)
+        {
+            var currentInventory = Inventories.FirstOrDefault(f => f.Id == inventoryId);
+            if (currentInventory == null)
+                throw new NullOrEmptyDomainDataException("محصول یافت نشد");
+
+            //TODO Check Inventories
+            currentInventory.ReleaseReserved(count);
+        }
+
+        // کاهش موجودی واقعی (بعد از پرداخت موفق)
+        public void DecreaseCount(long inventoryId, int count)
+        {
+            var currentInventory = Inventories.FirstOrDefault(f => f.Id == inventoryId);
+            if (currentInventory == null)
+                throw new NullOrEmptyDomainDataException("محصول یافت نشد");
+
+            //TODO Check Inventories
+            currentInventory.DecreaseCount(count);
+        }
+
     }
 }

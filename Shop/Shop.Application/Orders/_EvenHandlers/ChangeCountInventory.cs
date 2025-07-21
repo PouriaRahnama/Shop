@@ -39,15 +39,7 @@ public class ChangeCountInventory : INotificationHandler<OrderFinalized>
                 var seller = await _sellerRepository.GetTracking(inventory.SellerId);
                 if (seller == null) continue;
 
-                // بررسی موجودی کافی
-                if (inventory.Count < item.Count)
-                {
-                    Console.WriteLine($"❗ موجودی کافی نیست برای InventoryId: {inventory.Id} (موجودی: {inventory.Count} / مورد نیاز: {item.Count})");
-                    continue;
-                }
-
-                int newCount = inventory.Count - item.Count;
-                seller.EditInventory(inventory.Id, newCount, inventory.Price, inventory.DiscountPercentage);
+                seller.DecreaseCount(inventory.Id,item.Count);
             }
 
             await _sellerRepository.Save();

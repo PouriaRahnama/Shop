@@ -40,6 +40,18 @@
                     </div>
                 </div>
             }
+            @if (Model.OrderDto.Status == OrderStatus.Rejected)
+            {
+                <div class="checkout-message">
+                    <div class="checkout-message-failed mb-3">
+                        <div class="icon-message failed-icon">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        سفارش <span class="order-code">@Model.OrderDto.Id</span> شما لغو شد.
+                    </div>
+
+                </div>
+            }
             else if (Model.OrderDto.Status == OrderStatus.Finally)
             {
                 <div class="checkout-message">

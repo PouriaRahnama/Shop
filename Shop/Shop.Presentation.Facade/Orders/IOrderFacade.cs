@@ -18,7 +18,7 @@ public interface IOrderFacade
     Task<OperationResult> DecreaseItemCount(DecreaseOrderItemCountCommand command);
     Task<OperationResult> FinallyOrder(OrderFinallyCommand command);
     Task<OperationResult> SendOrder(long orderId);
-
+    Task<OperationResult> CancelOrder(long orderId);
 
 
     Task<OrderDto?> GetOrderById(long orderId);

@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Home page";
     var banners = Model.MainPageData.Banners;
-    var topSlider = banners.FirstOrDefault(f => f.Position == BannerPosition.بالای_اسلایدر);
+    var topSlider = banners.FirstOrDefault(f => f.Position == BannerPosition.بالای_اسلایدر) ?? new BannerDto();
     var leftSlider = banners.Where(f => f.Position == BannerPosition.سمت_چپ_اسلایدر).ToList();
     var rightSpecial = banners.Where(f => f.Position == BannerPosition.سمت_راست_شگفت_انگیز).ToList();
     var middlePage = banners.Where(f => f.Position == BannerPosition.وسط_صفحه).ToList();

@@ -51,28 +51,36 @@ namespace Shop.Api.Controllers
         public async Task<IActionResult> Verify(long orderId, long trackId, int success, string errorRedirect, string successRedirect)
         {
             if (success == 0)
+            {
+                await _orderFacade.CancelOrder(orderId); // 🔴 لغو سفارش چون پرداخت انجام نشده
                 return Redirect(errorRedirect);
-
+            }
+               
             var order = await _orderFacade.GetOrderById(orderId);
-
 
             if (order == null)
                 return Redirect(errorRedirect);
 
             var result = await _zibalService.Verify(new ZibalVeriyfyRequest(trackId, "zibal"));
-
-            //if (result.Status != 100)
-            //    return Redirect(errorRedirect);
+            if (result.Status != 1)
+            {
+                await _orderFacade.CancelOrder(orderId); // 🔴 لغو سفارش چون پرداخت تایید نشده
+                return Redirect(errorRedirect);
+            }
 
 
             if (result.Amount != order.TotalPrice)
+            {
+                await _orderFacade.CancelOrder(orderId); // 🔴 لغو سفارش چون مبلغ تطابق نداره
                 return Redirect(errorRedirect);
+            }
 
             var commandResult = await _orderFacade.FinallyOrder(new OrderFinallyCommand(orderId));
 
             if (commandResult.Status == OperationResultStatus.Success)
                 return Redirect(successRedirect);
 
+            await _orderFacade.CancelOrder(orderId); // 🔴 لغو سفارش چون مبلغ تطابق نداره
             return Redirect(errorRedirect);
         }
     }
