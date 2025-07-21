@@ -88,7 +88,6 @@ namespace Shop.Domain.SellerAgg
             if (currentInventory == null)
                 throw new NullOrEmptyDomainDataException("محصول یافت نشد");
 
-            //TODO Check Inventories
             currentInventory.Reserve(count);
         }
 
@@ -99,7 +98,6 @@ namespace Shop.Domain.SellerAgg
             if (currentInventory == null)
                 throw new NullOrEmptyDomainDataException("محصول یافت نشد");
 
-            //TODO Check Inventories
             currentInventory.ReleaseReserved(count);
         }
 
@@ -110,7 +108,6 @@ namespace Shop.Domain.SellerAgg
             if (currentInventory == null)
                 throw new NullOrEmptyDomainDataException("محصول یافت نشد");
 
-            //TODO Check Inventories
             currentInventory.DecreaseCount(count);
         }
 
