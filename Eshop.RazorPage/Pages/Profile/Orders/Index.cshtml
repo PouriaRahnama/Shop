@@ -36,7 +36,7 @@
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link @(Model.FilterResult.FilterParams.Status==OrderStatus.Rejected?"active":null)" asp-page="Index" asp-route-status="@OrderStatus.Rejected">
-                            مرجوع شده
+                            لغو شده
                         </a>
                     </li>
                 </ul>
@@ -98,7 +98,7 @@
                                                         }
                                                     case OrderStatus.Rejected:
                                                         {
-                                                            <span>مرجوع شده</span>
+                                                            <span>لغو شده</span>
                                                             break;
                                                         }
                                                     case OrderStatus.Shipping:

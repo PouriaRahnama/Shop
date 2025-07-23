@@ -24,7 +24,7 @@ namespace Eshop.RazorPage.Pages.Admin.Orders
             if (string.IsNullOrWhiteSpace(endDate) == false)
                 FilterParams.StartDate = endDate.ToMiladi();
 
-            FilterParams.Take = 1;
+            FilterParams.Take = 20;
             FilterResult = await _orderService.GetOrders(FilterParams);
         }
     }
