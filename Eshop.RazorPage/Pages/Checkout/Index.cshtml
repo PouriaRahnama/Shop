@@ -140,6 +140,13 @@
     <div class="col-xl-3 col-lg-4 col-md-4">
         <div class="shadow-around pt-3">
             <div class="d-flex justify-content-between px-3 py-2">
+                <span class="text-muted">کسر تخفیف سفارش </span>
+                <span class="text-muted">
+                    @(Model.Order?.Discount?.DiscountAmount != null ? Model.Order.Discount.DiscountAmount.ToString("#,0") : 0)
+                    <span class="text-sm">تومان</span>
+                </span>
+            </div>
+            <div class="d-flex justify-content-between px-3 py-2">
                 <span class="text-muted">قیمت کالاها (@Model.Order.Items.Sum(s=>s.Count))</span>
                 <span class="text-muted">
                     @Model.Order.Items.Sum(s=>s.TotalPrice).ToString("#,0")
