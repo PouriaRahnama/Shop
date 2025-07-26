@@ -103,7 +103,7 @@ namespace Shop.Domain.OrderAgg
         {
             Status = OrderStatus.Finally;
             LastUpdate=DateTime.Now;
-            AddDomainEvent(new OrderFinalized(Id));
+            //AddDomainEvent(new OrderFinalized(Id));
         }
         public void ChangeStatus(OrderStatus status)
         {
@@ -117,6 +117,7 @@ namespace Shop.Domain.OrderAgg
 
             Address = orderAddress;
             ShippingMethod = shippingMethod;
+            ChangeStatus(OrderStatus.CheckedOut); // فقط در حد رزرو
         }
 
         public void ChangeOrderGuard()

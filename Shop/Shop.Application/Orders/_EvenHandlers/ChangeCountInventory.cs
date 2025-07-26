@@ -22,6 +22,8 @@ public class ChangeCountInventory : INotificationHandler<OrderFinalized>
 
     public async Task Handle(OrderFinalized notification, CancellationToken cancellationToken)
     {
+        await Task.Delay(300, cancellationToken); // 🕒 تأخیر کوتاه برای همگام‌سازی با Save()
+
         await _semaphore.WaitAsync(cancellationToken); // 🚦 قفل گرفتن
 
         try
@@ -29,17 +31,29 @@ public class ChangeCountInventory : INotificationHandler<OrderFinalized>
             Console.WriteLine("ChangeCountInventory");
 
             var order = await _orderRepository.GetTracking(notification.OrderId);
-            if (order == null) return;
+            if (order == null)
+            {
+                Console.WriteLine("❌ Order not found");
+                return;
+            }
 
             foreach (var item in order.Items)
             {
                 var inventory = await _sellerRepository.GetInventoryById(item.InventoryId);
-                if (inventory == null) continue;
+                if (inventory == null)
+                {
+                    Console.WriteLine($"⚠️ Inventory not found: {item.InventoryId}");
+                    continue;
+                }
 
                 var seller = await _sellerRepository.GetTracking(inventory.SellerId);
-                if (seller == null) continue;
+                if (seller == null)
+                {
+                    Console.WriteLine($"⚠️ Seller not found: {inventory.SellerId}");
+                    continue;
+                }
 
-                seller.DecreaseCount(inventory.Id,item.Count);
+                seller.DecreaseCount(inventory.Id, item.Count);
             }
 
             await _sellerRepository.Save();
@@ -49,4 +63,5 @@ public class ChangeCountInventory : INotificationHandler<OrderFinalized>
             _semaphore.Release(); // 🔓 آزاد کردن قفل
         }
     }
+
 }

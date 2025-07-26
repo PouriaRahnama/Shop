@@ -1,5 +1,6 @@
-using Common.Query;
+﻿using Common.Query;
 using Microsoft.EntityFrameworkCore;
+using Shop.Domain.OrderAgg;
 using Shop.Infrastructure.Persistent.Dapper;
 using Shop.Infrastructure.Persistent.Ef;
 using Shop.Query.Orders;
@@ -22,7 +23,11 @@ public class GetCurrentUserOrderQueryHandler : IQueryHandler<GetCurrentUserOrder
     public async Task<OrderDto?> Handle(GetCurrentUserOrderQuery request, CancellationToken cancellationToken)
     {
         var order = await _shopContext.Orders
-            .FirstOrDefaultAsync(f => f.UserId == request.UserId && f.Status==Shop.Domain.OrderAgg.OrderStatus.Pending, cancellationToken);
+            .Where(f => f.UserId == request.UserId &&
+                        (f.Status == OrderStatus.Pending || f.Status == OrderStatus.CheckedOut))
+            .OrderByDescending(f => f.CreationDate) // جدیدترین سفارش اول
+            .FirstOrDefaultAsync(cancellationToken);
+
         if (order == null)
             return new OrderDto();
 

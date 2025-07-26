@@ -13,10 +13,13 @@ namespace Shop.Infrastructure.Persistent.Ef.OrderAgg
         }
         public async Task<Order?> GetCurrentUserOrder(long userId)
         {
-            return await Context.Orders.AsTracking().FirstOrDefaultAsync(f => f.UserId == userId
-            && f.Status == OrderStatus.Pending);
+            return await Context.Orders
+                .AsTracking()
+                .FirstOrDefaultAsync(f => f.UserId == userId &&
+                (f.Status == OrderStatus.Pending || f.Status == OrderStatus.CheckedOut));
         }
 
-       
+
+
     }
 }

@@ -7,6 +7,7 @@ using Shop.Api.Infrastructure.Gateways.Zibal;
 using Shop.Api.Infrastructure.Gateways.Zibal.DTOs;
 using Shop.Api.ViewModels.Transactions;
 using Shop.Application.Orders.Finally;
+using Shop.Domain.OrderAgg;
 using Shop.Presentation.Facade.Orders;
 
 namespace Shop.Api.Controllers
@@ -60,6 +61,18 @@ namespace Shop.Api.Controllers
 
             if (order == null)
                 return Redirect(errorRedirect);
+
+            // 🛑 جلوگیری از پردازش مجدد سفارش‌هایی که نهایی یا رد شده‌اند
+            if (order.Status == OrderStatus.Finally)
+            {
+                return Redirect(successRedirect); // یا یک پیام مشخص، مثلا "پرداخت قبلاً انجام شده است"
+            }
+
+            // 🛑 جلوگیری از پردازش مجدد سفارش‌هایی که نهایی یا رد شده‌اند
+            if (order.Status == OrderStatus.Rejected)
+            {
+                return Redirect(errorRedirect); // یا یک پیام مشخص، مثلا "پرداخت قبلاً انجام شده است"
+            }
 
             var result = await _zibalService.Verify(new ZibalVeriyfyRequest(trackId, "zibal"));
             if (result.Status != 1)
