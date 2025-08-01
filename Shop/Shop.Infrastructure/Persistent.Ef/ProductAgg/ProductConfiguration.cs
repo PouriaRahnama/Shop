@@ -9,7 +9,7 @@ public class ProductConfiguration:IEntityTypeConfiguration<Product>
     public void Configure(EntityTypeBuilder<Product> builder)
     {
         builder.ToTable("Products", "product");
-        builder.HasKey(b => b.Id);
+       // builder.HasKey(b => b.Id);
         builder.HasIndex(b => b.Slug).IsUnique();
 
         builder.Property(b => b.Title)
@@ -55,7 +55,7 @@ public class ProductConfiguration:IEntityTypeConfiguration<Product>
         builder.OwnsMany(b => b.Images, option =>
         {
             option.ToTable("Images", "product");
-            option.HasKey(I => I.Id);
+            //option.HasKey(I => I.Id);
 
             option.Property(b => b.ImageName)
                 .IsRequired()
@@ -66,7 +66,7 @@ public class ProductConfiguration:IEntityTypeConfiguration<Product>
         builder.OwnsMany(b => b.Specifications, option =>
         {
             option.ToTable("Specifications", "product");
-            option.HasKey(I => I.Id);
+            //option.HasKey(I => I.Id);
 
             option.Property(b => b.Key)
                 .IsRequired()

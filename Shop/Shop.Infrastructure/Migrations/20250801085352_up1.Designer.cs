@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.Infrastructure.Persistent.Ef;
 
@@ -11,9 +12,10 @@ using Shop.Infrastructure.Persistent.Ef;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    partial class ShopContextModelSnapshot : ModelSnapshot
+    [Migration("20250801085352_up1")]
+    partial class up1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -675,9 +677,6 @@ namespace Shop.Infrastructure.Migrations
                 {
                     b.OwnsMany("Shop.Domain.RoleAgg.RolePermission", "Permissions", b1 =>
                         {
-                            b1.Property<long>("RoleId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
@@ -690,7 +689,12 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<int>("Permission")
                                 .HasColumnType("int");
 
-                            b1.HasKey("RoleId", "Id");
+                            b1.Property<long>("RoleId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("RoleId");
 
                             b1.ToTable("Permissions", "role");
 
@@ -751,9 +755,6 @@ namespace Shop.Infrastructure.Migrations
                 {
                     b.OwnsMany("Shop.Domain.UserAgg.UserAddress", "Addresses", b1 =>
                         {
-                            b1.Property<long>("UserId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
@@ -800,7 +801,10 @@ namespace Shop.Infrastructure.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
 
-                            b1.HasKey("UserId", "Id");
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
 
                             b1.HasIndex("UserId");
 
@@ -811,9 +815,6 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.OwnsOne("Common.Domain.ValueObjects.PhoneNumber", "PhoneNumber", b2 =>
                                 {
-                                    b2.Property<long>("UserAddressUserId")
-                                        .HasColumnType("bigint");
-
                                     b2.Property<long>("UserAddressId")
                                         .HasColumnType("bigint");
 
@@ -823,12 +824,12 @@ namespace Shop.Infrastructure.Migrations
                                         .HasColumnType("nvarchar(11)")
                                         .HasColumnName("PhoneNumber");
 
-                                    b2.HasKey("UserAddressUserId", "UserAddressId");
+                                    b2.HasKey("UserAddressId");
 
                                     b2.ToTable("Addresses", "user");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("UserAddressUserId", "UserAddressId");
+                                        .HasForeignKey("UserAddressId");
                                 });
 
                             b1.Navigation("PhoneNumber")
@@ -837,9 +838,6 @@ namespace Shop.Infrastructure.Migrations
 
                     b.OwnsMany("Shop.Domain.UserAgg.UserRole", "Roles", b1 =>
                         {
-                            b1.Property<long>("UserId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
@@ -852,7 +850,10 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<long>("RoleId")
                                 .HasColumnType("bigint");
 
-                            b1.HasKey("UserId", "Id");
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
 
                             b1.HasIndex("UserId");
 
@@ -909,9 +910,6 @@ namespace Shop.Infrastructure.Migrations
 
                     b.OwnsMany("Shop.Domain.UserAgg.Wallet", "Wallets", b1 =>
                         {
-                            b1.Property<long>("UserId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
@@ -937,7 +935,10 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<int>("Type")
                                 .HasColumnType("int");
 
-                            b1.HasKey("UserId", "Id");
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
 
                             b1.HasIndex("UserId");
 

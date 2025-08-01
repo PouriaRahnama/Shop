@@ -9,7 +9,7 @@ internal class RoleConfiguration : IEntityTypeConfiguration<Role>
     public void Configure(EntityTypeBuilder<Role> builder)
     {
         builder.ToTable("Roles", "role");
-        builder.HasKey(b => b.Id);
+        //builder.HasKey(b => b.Id);
 
         builder.Property(b => b.Title)
             .IsRequired()
@@ -18,7 +18,7 @@ internal class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.OwnsMany(b => b.Permissions, option =>
         {
             option.ToTable("Permissions", "role");
-            option.HasKey(b => b.Id);
+            //option.HasKey(b => b.Id);
         });
     }
 }
