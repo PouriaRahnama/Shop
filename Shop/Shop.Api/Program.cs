@@ -62,11 +62,11 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
+CommonBootstrapper.Init(builder.Services);
 builder.Services.RegisterShopDependency(connectionString);
 builder.Services.RegisterApiDependency(builder.Configuration);
 
-CommonBootstrapper.Init(builder.Services);
+
 builder.Services.AddTransient<IFileService, FileService>();
 
 builder.Services.AddJwtAuthentication(builder.Configuration);

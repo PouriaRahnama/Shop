@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Shop.Application.Categories.Create
 {
-    internal partial class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
+    public partial class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
     {
         public CreateCategoryCommandValidator()
         {

@@ -32,7 +32,6 @@ namespace Shop.Config
             services.AddTransient<ICategoryDomainService, CategoryDomainService>();
             services.AddTransient<ISellerDomainService, SellerDomainService>();
 
-
             services.AddValidatorsFromAssembly(typeof(CreateRoleCommandValidator).Assembly);
 
             services.InitFacadeDependency();
