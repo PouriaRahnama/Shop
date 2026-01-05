@@ -9,7 +9,6 @@ namespace Shop.Application.Orders.Checkout
 {
     public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderCommand>
     {
-        private static readonly SemaphoreSlim _inventoryLock = new SemaphoreSlim(1, 1);
         private readonly IOrderRepository _repository;
         private readonly ISellerRepository _sellerRepository;
         private IShippingMethodRepository _shippingMethodRepository;
@@ -45,26 +44,19 @@ namespace Shop.Application.Orders.Checkout
 
                 currentOrder.Checkout(address, new OrderShippingMethod(shippingMethod.Title, shippingMethod.Cost));
 
-                await _inventoryLock.WaitAsync();
-                try
+                foreach (var item in currentOrder.Items)
                 {
-                    foreach (var item in currentOrder.Items)
-                    {
-                        var inventory = await _sellerRepository.GetInventoryById(item.InventoryId);
-                        if (inventory == null)
-                            return OperationResult.Error("موجودی کالا یافت نشد.");
+                    var inventory = await _sellerRepository.GetInventoryById(item.InventoryId);
+                    if (inventory == null)
+                        return OperationResult.Error("موجودی کالا یافت نشد.");
 
-                        var seller = await _sellerRepository.GetTracking(inventory.SellerId);
-                        if (seller == null)
-                            return OperationResult.Error("فروشنده کالا یافت نشد.");
+                    var seller = await _sellerRepository.GetTracking(inventory.SellerId);
+                    if (seller == null)
+                        return OperationResult.Error("فروشنده کالا یافت نشد.");
 
-                        seller.Reserve(inventory.Id, item.Count);
-                    }
+                    seller.Reserve(inventory.Id, item.Count);
                 }
-                finally
-                {
-                    _inventoryLock.Release();
-                }
+
 
                 await _repository.Save();
             }
