@@ -36,7 +36,6 @@ namespace Shop.Infrastructure
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<IShippingMethodRepository, ShippingMethodRepository>();
-
             services.AddSingleton<ICustomPublisher, CustomPublisher>();
 
             services.AddTransient(_ => new DapperContext(connectionString));

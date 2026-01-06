@@ -1,6 +1,8 @@
 ﻿using Common.Application;
 using MediatR;
+using Shop.Domain.OrderAgg;
 using Shop.Domain.OrderAgg.Repository;
+using Shop.Domain.SellerAgg;
 using Shop.Domain.SellerAgg.Repository;
 using System.Data;
 using System.Threading;
@@ -22,16 +24,15 @@ public class OrderFinallyCommandHandler : IBaseCommandHandler<OrderFinallyComman
 
     public async Task<OperationResult> Handle(OrderFinallyCommand request, CancellationToken cancellationToken)
     {
-        await _semaphore.WaitAsync(cancellationToken);
+        var order = await _orderRepository.GetTracking(request.OrderId);
+        if (order == null)
+            return OperationResult.NotFound();
+
+        await _orderRepository.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
         try
         {
-            var order = await _orderRepository.GetTracking(request.OrderId);
-            if (order == null)
-                return OperationResult.NotFound();
 
-            order.Finally();
-            await _orderRepository.Save(); // ⬅️ اضافه شد
-
+            // کاهش موجودی
             foreach (var item in order.Items)
             {
                 var inventory = await _sellerRepository.GetInventoryById(item.InventoryId);
@@ -48,16 +49,26 @@ public class OrderFinallyCommandHandler : IBaseCommandHandler<OrderFinallyComman
                     continue;
                 }
 
+                var affectedRows = await _orderRepository.DecreaseInventoryAtomic(item.InventoryId, item.Count);
+                if (affectedRows == 0)
+                {
+                    throw new Exception("موجودی کافی نیست");
+                }
                 seller.DecreaseCount(inventory.Id, item.Count);
-            }
 
+            }
+            // تغییر وضعیت سفارش
+            order.Finally();
             await _sellerRepository.Save();
+            await _orderRepository.CommitTransactionAsync();
             return OperationResult.Success();
         }
-        finally
+        catch
         {
-            _semaphore.Release();
+            await _orderRepository.RollbackTransactionAsync();
+            throw;
         }
+
     }
 
 }

@@ -42,28 +42,51 @@ namespace Shop.Application.Orders.Checkout
                 if (shippingMethod == null)
                     return OperationResult.Error("روش ارسال پیدا نشد.");
 
-                currentOrder.Checkout(address, new OrderShippingMethod(shippingMethod.Title, shippingMethod.Cost));
-
-                foreach (var item in currentOrder.Items)
+                await _repository.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
+                try
                 {
-                    var inventory = await _sellerRepository.GetInventoryById(item.InventoryId);
-                    if (inventory == null)
-                        return OperationResult.Error("موجودی کالا یافت نشد.");
+                    //  رزرو موجودی‌ها به صورت اتمیک(Race Condition)
+                    foreach (var item in currentOrder.Items)
+                    {
+                        var inventory = await _sellerRepository.GetInventoryById(item.InventoryId);
+                        if (inventory == null)
+                            return OperationResult.Error("موجودی کالا یافت نشد.");
 
-                    var seller = await _sellerRepository.GetTracking(inventory.SellerId);
-                    if (seller == null)
-                        return OperationResult.Error("فروشنده کالا یافت نشد.");
+                        var seller = await _sellerRepository.GetTracking(inventory.SellerId);
+                        if (seller == null)
+                            return OperationResult.Error("فروشنده کالا یافت نشد.");
 
-                    seller.Reserve(inventory.Id, item.Count);
+
+                        var affectedRows =
+                            await _repository.ReserveInventory(item.InventoryId, item.Count);
+
+                        if (affectedRows == 0)
+                        {
+                            await _repository.RollbackTransactionAsync();
+                            return OperationResult.Error("موجودی کالا کافی نیست.");
+                        }
+
+                        // همگام‌سازی دامین (نه برای همزمانی، برای بیزینس)
+                        seller.Reserve(inventory.Id, item.Count);
+     
+                    }
+
+                    // تغییر وضعیت سفارش
+                    currentOrder.Checkout(address, new OrderShippingMethod(shippingMethod.Title, shippingMethod.Cost));
+
+                    await _repository.Save();
+                    await _repository.CommitTransactionAsync();
+
+                    return OperationResult.Success();
                 }
-
-
-                await _repository.Save();
+                catch
+                {
+                    await _repository.RollbackTransactionAsync();
+                    throw;
+                }
             }
-
             // ✅ اگر سفارش در حالت CheckedOut بود، فقط بدون تغییر ادامه بده
             return OperationResult.Success();
         }
-
     }
 }
